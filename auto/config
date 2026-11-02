@@ -6,8 +6,8 @@ set -eu
 lb config noauto \
   --mode debian \
   --distribution testing \
-  --architectures amd64 \
-  --binary-images iso-hybrid \
+  --architecture amd64 \
+  --binary-image iso-hybrid \
   --bootloaders "grub-efi grub-pc" \
   --archive-areas "main contrib non-free non-free-firmware" \
   --apt-recommends false \
