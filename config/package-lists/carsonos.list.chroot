@@ -48,5 +48,6 @@ dosfstools
 e2fsprogs
 btrfs-progs
 ntfs-3g
+isolinux
 firmware-linux
 firmware-linux-nonfree
