@@ -10,10 +10,10 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-for command in lb xorriso mksquashfs; do
+for command in lb debootstrap xorriso mksquashfs grub-mkrescue; do
     if ! command -v "$command" >/dev/null 2>&1; then
         echo "Missing build dependency: $command" >&2
-        echo "Install live-build, xorriso, and squashfs-tools first." >&2
+        echo "Install live-build, debootstrap, xorriso, squashfs-tools, and GRUB EFI/BIOS tools." >&2
         exit 1
     fi
 done
@@ -21,12 +21,12 @@ done
 cd "$ROOT_DIR"
 mkdir -p "$BUILD_DIR"
 
-# A clean build avoids stale package indexes and previous generated config.
+# Remove generated state, then explicitly run our config script.
 lb clean --purge || true
 rm -f "$ROOT_DIR"/live-image-amd64.hybrid.iso
 rm -f "$ROOT_DIR"/live-image-amd64.contents "$ROOT_DIR"/live-image-amd64.packages
 
-lb config
+sh "$ROOT_DIR/auto/config"
 lb build
 
 ISO="$ROOT_DIR/live-image-amd64.hybrid.iso"
