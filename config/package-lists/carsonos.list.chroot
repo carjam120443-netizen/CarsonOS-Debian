@@ -1,5 +1,6 @@
 # CarsonOS Debian XFCE live desktop
-task-xfce-desktop
+xorg
+xfce4
 xfce4-goodies
 lightdm
 lightdm-gtk-greeter
@@ -22,9 +23,8 @@ bash-completion
 git
 build-essential
 fastfetch
-neofetch
-htop
 btop
+htop
 unzip
 zip
 p7zip-full
@@ -45,8 +45,5 @@ dosfstools
 e2fsprogs
 btrfs-progs
 ntfs-3g
-grub-efi-amd64
-grub-pc
-os-prober
 firmware-linux
 firmware-linux-nonfree
