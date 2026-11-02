@@ -16,6 +16,7 @@ lb config noauto \
   --debian-installer false \
   --firmware-chroot true \
   --firmware-binary true \
+  --initsystem systemd \
   --iso-application "CarsonOS Debian" \
   --iso-volume "CARSONOS_DEBIAN" \
   --iso-publisher "CarsonOS Project" \
