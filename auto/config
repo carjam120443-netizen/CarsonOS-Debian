@@ -3,12 +3,13 @@ set -eu
 
 # Debian Testing live-build configuration for CarsonOS Debian.
 # Keep the suite name as "testing" so future builds follow Debian Testing.
+# For amd64 iso-hybrid images, let live-build select its default BIOS and
+# UEFI bootloaders; older live-build releases may not support --bootloaders.
 lb config noauto \
   --mode debian \
   --distribution testing \
   --architecture amd64 \
   --binary-image iso-hybrid \
-  --bootloaders "grub-efi grub-pc" \
   --archive-areas "main contrib non-free non-free-firmware" \
   --apt-recommends false \
   --apt-indices true \
