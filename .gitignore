@@ -8,15 +8,6 @@
 /config/chroot
 /config/common
 /config/source
-/config/installer
-/config/packages
-/config/hooks
-/config/includes.binary
-/config/archives
-/config/bootloaders
-/config/apt
-/config/debian-installer
-/config/firmware
 /config/package-lists/*.list.chroot.binary
 /config/package-lists/*.list.chroot_live
 /config/package-lists/*.list.chroot_install
