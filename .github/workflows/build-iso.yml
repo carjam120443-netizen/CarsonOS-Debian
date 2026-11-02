@@ -38,6 +38,23 @@ jobs:
             /usr/lib/live/build/lb_chroot_linux-image
           grep -F '/main/Contents-' /usr/lib/live/build/lb_chroot_linux-image
 
+      - name: Fix live-build ISOLINUX template paths
+        run: |
+          # Current Debian packages place ISOLINUX and Syslinux modules under /usr/lib.
+          # Some Ubuntu live-build templates still point at obsolete /lib/syslinux paths.
+          sudo test -f /usr/lib/ISOLINUX/isolinux.bin
+          sudo test -f /usr/lib/syslinux/modules/bios/vesamenu.c32
+
+          BOOTLOADER_DIR=/usr/share/live/build/bootloaders/isolinux
+          sudo ln -sfn /usr/lib/ISOLINUX/isolinux.bin "$BOOTLOADER_DIR/isolinux.bin"
+
+          for module in hdt.c32 ldlinux.c32 libcom32.c32 libgpl.c32 libmenu.c32 libutil.c32 vesamenu.c32; do
+            sudo test -f "/usr/lib/syslinux/modules/bios/$module"
+            sudo ln -sfn "/usr/lib/syslinux/modules/bios/$module" "$BOOTLOADER_DIR/$module"
+          done
+
+          ls -l "$BOOTLOADER_DIR/isolinux.bin" "$BOOTLOADER_DIR/vesamenu.c32"
+
       - name: Build CarsonOS Debian
         run: sudo sh ./scripts/build-iso.sh
 
