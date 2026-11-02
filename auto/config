@@ -22,6 +22,4 @@ lb config noauto \
   --iso-preparer "live-build" \
   --linux-flavours amd64 \
   --memtest none \
-  --updates true \
-  --security true \
   "${@}"
