@@ -28,7 +28,7 @@ jobs:
             grub-pc-bin grub-efi-amd64-bin mtools dosfstools
 
       - name: Build CarsonOS Debian
-        run: sudo ./scripts/build-iso.sh
+        run: sudo sh ./scripts/build-iso.sh
 
       - name: Upload ISO and checksum
         uses: actions/upload-artifact@v4
