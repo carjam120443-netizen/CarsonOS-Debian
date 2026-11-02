@@ -38,21 +38,25 @@ jobs:
             /usr/lib/live/build/lb_chroot_linux-image
           grep -F '/main/Contents-' /usr/lib/live/build/lb_chroot_linux-image
 
-      - name: Fix live-build ISOLINUX template paths
+      - name: Fix live-build ISOLINUX template files
         run: |
-          # Current Debian packages place ISOLINUX and Syslinux modules under /usr/lib.
-          # Some Ubuntu live-build templates still point at obsolete /lib/syslinux paths.
+          # live-build copies this template into the chroot and dereferences its files there.
+          # Use regular files, not absolute symlinks that only resolve on the GitHub runner.
+          BOOTLOADER_DIR=/usr/share/live/build/bootloaders/isolinux
           sudo test -f /usr/lib/ISOLINUX/isolinux.bin
           sudo test -f /usr/lib/syslinux/modules/bios/vesamenu.c32
 
-          BOOTLOADER_DIR=/usr/share/live/build/bootloaders/isolinux
-          sudo ln -sfn /usr/lib/ISOLINUX/isolinux.bin "$BOOTLOADER_DIR/isolinux.bin"
+          sudo install -m 0644 /usr/lib/ISOLINUX/isolinux.bin "$BOOTLOADER_DIR/isolinux.bin"
 
           for module in hdt.c32 ldlinux.c32 libcom32.c32 libgpl.c32 libmenu.c32 libutil.c32 vesamenu.c32; do
             sudo test -f "/usr/lib/syslinux/modules/bios/$module"
-            sudo ln -sfn "/usr/lib/syslinux/modules/bios/$module" "$BOOTLOADER_DIR/$module"
+            sudo install -m 0644 "/usr/lib/syslinux/modules/bios/$module" "$BOOTLOADER_DIR/$module"
           done
 
+          test -f "$BOOTLOADER_DIR/isolinux.bin"
+          test -f "$BOOTLOADER_DIR/vesamenu.c32"
+          test ! -L "$BOOTLOADER_DIR/isolinux.bin"
+          test ! -L "$BOOTLOADER_DIR/vesamenu.c32"
           ls -l "$BOOTLOADER_DIR/isolinux.bin" "$BOOTLOADER_DIR/vesamenu.c32"
 
       - name: Build CarsonOS Debian
