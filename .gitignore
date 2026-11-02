@@ -12,8 +12,6 @@
 /config/packages
 /config/hooks
 /config/includes.binary
-/config/includes.chroot
-/config/includes.installer
 /config/archives
 /config/bootloaders
 /config/apt
