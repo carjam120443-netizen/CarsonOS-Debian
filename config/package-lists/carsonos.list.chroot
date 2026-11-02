@@ -10,7 +10,8 @@ xfce4-terminal
 xfce4-clipman-plugin
 xfce4-pulseaudio-plugin
 network-manager
-network-manager-gnome
+network-manager-applet
+nm-connection-editor
 firefox-esr
 sudo
 curl
@@ -32,7 +33,9 @@ rsync
 udisks2
 gvfs
 gvfs-backends
-policykit-1
+polkitd
+pkexec
+xfce-polkit
 dbus-x11
 systemd-sysv
 live-boot
