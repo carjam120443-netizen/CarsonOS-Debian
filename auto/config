@@ -1,0 +1,27 @@
+#!/bin/sh
+set -eu
+
+# Debian Testing live-build configuration for CarsonOS Debian.
+# Keep the suite name as "testing" so future builds follow Debian Testing.
+lb config noauto \
+  --mode debian \
+  --distribution testing \
+  --architectures amd64 \
+  --binary-images iso-hybrid \
+  --bootloaders "grub-efi grub-pc" \
+  --archive-areas "main contrib non-free non-free-firmware" \
+  --apt-recommends false \
+  --apt-indices true \
+  --apt-source-archives false \
+  --debian-installer false \
+  --firmware-chroot true \
+  --firmware-binary true \
+  --iso-application "CarsonOS Debian" \
+  --iso-volume "CARSONOS_DEBIAN" \
+  --iso-publisher "CarsonOS Project" \
+  --iso-preparer "live-build" \
+  --linux-flavours amd64 \
+  --memtest none \
+  --updates true \
+  --security true \
+  "${@}"
