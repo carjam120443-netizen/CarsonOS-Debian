@@ -26,7 +26,7 @@ jobs:
           sudo apt-get install -y \
             live-build debootstrap squashfs-tools xorriso \
             grub-pc-bin grub-efi-amd64-bin mtools dosfstools \
-            isolinux syslinux-common
+            isolinux syslinux-common cpio
 
       - name: Fix live-build Debian Contents index paths
         run: |
@@ -58,6 +58,13 @@ jobs:
           test ! -L "$BOOTLOADER_DIR/isolinux.bin"
           test ! -L "$BOOTLOADER_DIR/vesamenu.c32"
           ls -l "$BOOTLOADER_DIR/isolinux.bin" "$BOOTLOADER_DIR/vesamenu.c32"
+
+          # Ubuntu live-build's ISOLINUX stage unconditionally extracts a
+          # bootlogo cpio archive, but only creates it itself in Ubuntu mode.
+          # CarsonOS uses Debian mode, so provide a valid empty newc archive.
+          sudo sh -c 'cd "$1" && printf "" | cpio -o -H newc > bootlogo' sh "$BOOTLOADER_DIR"
+          sudo test -s "$BOOTLOADER_DIR/bootlogo"
+          ls -l "$BOOTLOADER_DIR/bootlogo"
 
       - name: Fix live-build legacy rsvg command
         run: |
