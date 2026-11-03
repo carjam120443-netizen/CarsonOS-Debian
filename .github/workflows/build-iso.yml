@@ -59,6 +59,20 @@ jobs:
           test ! -L "$BOOTLOADER_DIR/vesamenu.c32"
           ls -l "$BOOTLOADER_DIR/isolinux.bin" "$BOOTLOADER_DIR/vesamenu.c32"
 
+      - name: Fix live-build legacy rsvg command
+        run: |
+          # Ubuntu's live-build still calls the removed "rsvg" executable and uses
+          # its old positional-output syntax. Debian Testing provides rsvg-convert.
+          LIVE_BUILD_SCRIPT=/usr/lib/live/build/lb_binary_syslinux
+          sudo grep -n 'rsvg' "$LIVE_BUILD_SCRIPT"
+          sudo sed -i \
+            -e 's|chroot/usr/bin/rsvg librsvg2-bin|chroot/usr/bin/rsvg-convert librsvg2-bin|g' \
+            -e 's|rsvg --format png --height 480 --width 640 splash.svg splash.png|rsvg-convert --format png --height 480 --width 640 splash.svg -o splash.png|g' \
+            -e 's|rsvg --format png --height 480 --width 640 "${_TARGET}/splash.svg" "${_TARGET}/splash.png"|rsvg-convert --format png --height 480 --width 640 "${_TARGET}/splash.svg" -o "${_TARGET}/splash.png"|g' \
+            "$LIVE_BUILD_SCRIPT"
+          sudo grep -n 'rsvg' "$LIVE_BUILD_SCRIPT"
+          sudo grep -q 'rsvg-convert --format png --height 480 --width 640 splash.svg -o splash.png' "$LIVE_BUILD_SCRIPT"
+
       - name: Build CarsonOS Debian
         run: sudo sh ./scripts/build-iso.sh
 
